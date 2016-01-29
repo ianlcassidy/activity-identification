@@ -49,49 +49,67 @@ def create_features_and_labels(df, subjectID):
     for act in activity_array:
         df_ID = df[df['activityID'] == act]
 
+        # find 0.1 and 0.9 indices
+        i1 = len(df_ID) / 10
+        i2 = 9 * len(df_ID) / 10
+
         # initialize features
         X_obs = np.array([])
         # mean temperature (all three locations)
-        X_obs = np.append(X_obs, (np.nanmean(df_ID['hand_temp']),
-                                  np.nanmean(df_ID['chest_temp']),
-                                  np.nanmean(df_ID['ankle_temp'])))
-        # mean abs accel (all three locations)
-        X_obs = np.append(X_obs, (np.nanmean(np.abs(df_ID['hand_accel_x'])),
-                                  np.nanmean(np.abs(df_ID['hand_accel_y'])),
-                                  np.nanmean(np.abs(df_ID['hand_accel_z'])),
-                                  np.nanmean(np.abs(df_ID['chest_accel_x'])),
-                                  np.nanmean(np.abs(df_ID['chest_accel_y'])),
-                                  np.nanmean(np.abs(df_ID['chest_accel_z'])),
-                                  np.nanmean(np.abs(df_ID['ankle_accel_x'])),
-                                  np.nanmean(np.abs(df_ID['ankle_accel_y'])),
-                                  np.nanmean(np.abs(df_ID['ankle_accel_z']))))
+        X_obs = np.append(X_obs, (np.nanmean(df_ID['hand_temp'][i1:i2]),
+                                  np.nanmean(df_ID['chest_temp'][i1:i2]),
+                                  np.nanmean(df_ID['ankle_temp'][i1:i2])))
+        # mean accel (all three locations)
+        X_obs = np.append(X_obs, (np.nanmean(df_ID['hand_accel_x'][i1:i2]),
+                                  np.nanmean(df_ID['hand_accel_y'][i1:i2]),
+                                  np.nanmean(df_ID['hand_accel_z'][i1:i2]),
+                                  np.nanmean(df_ID['chest_accel_x'][i1:i2]),
+                                  np.nanmean(df_ID['chest_accel_y'][i1:i2]),
+                                  np.nanmean(df_ID['chest_accel_z'][i1:i2]),
+                                  np.nanmean(df_ID['ankle_accel_x'][i1:i2]),
+                                  np.nanmean(df_ID['ankle_accel_y'][i1:i2]),
+                                  np.nanmean(df_ID['ankle_accel_z'][i1:i2])))
         # mean abs gyro (all three locations)
-        X_obs = np.append(X_obs, (np.nanmean(np.abs(df_ID['hand_gyro_x'])),
-                                  np.nanmean(np.abs(df_ID['hand_gyro_y'])),
-                                  np.nanmean(np.abs(df_ID['hand_gyro_z'])),
-                                  np.nanmean(np.abs(df_ID['chest_gyro_x'])),
-                                  np.nanmean(np.abs(df_ID['chest_gyro_y'])),
-                                  np.nanmean(np.abs(df_ID['chest_gyro_z'])),
-                                  np.nanmean(np.abs(df_ID['ankle_gyro_x'])),
-                                  np.nanmean(np.abs(df_ID['ankle_gyro_y'])),
-                                  np.nanmean(np.abs(df_ID['ankle_gyro_z']))))
+        X_obs = np.append(X_obs, (np.nanmean(np.abs(df_ID['hand_gyro_x'][i1:i2])),
+                                  np.nanmean(np.abs(df_ID['hand_gyro_y'][i1:i2])),
+                                  np.nanmean(np.abs(df_ID['hand_gyro_z'][i1:i2])),
+                                  np.nanmean(np.abs(df_ID['chest_gyro_x'][i1:i2])),
+                                  np.nanmean(np.abs(df_ID['chest_gyro_y'][i1:i2])),
+                                  np.nanmean(np.abs(df_ID['chest_gyro_z'][i1:i2])),
+                                  np.nanmean(np.abs(df_ID['ankle_gyro_x'][i1:i2])),
+                                  np.nanmean(np.abs(df_ID['ankle_gyro_y'][i1:i2])),
+                                  np.nanmean(np.abs(df_ID['ankle_gyro_z'][i1:i2]))))
         # mean abs magnet (all three locations)
-        X_obs = np.append(X_obs, (np.nanmean(np.abs(df_ID['hand_magnet_x'])),
-                                  np.nanmean(np.abs(df_ID['hand_magnet_y'])),
-                                  np.nanmean(np.abs(df_ID['hand_magnet_z'])),
-                                  np.nanmean(np.abs(df_ID['chest_magnet_x'])),
-                                  np.nanmean(np.abs(df_ID['chest_magnet_y'])),
-                                  np.nanmean(np.abs(df_ID['chest_magnet_z'])),
-                                  np.nanmean(np.abs(df_ID['ankle_magnet_x'])),
-                                  np.nanmean(np.abs(df_ID['ankle_magnet_y'])),
-                                  np.nanmean(np.abs(df_ID['ankle_magnet_z']))))
-        # heartrate difference
-        X_obs = np.append(
-            X_obs, (np.nanmean(df_ID['heartrate'])) - subject_info['RestingHR'][subjectID])
-        # subject info data
+        X_obs = np.append(X_obs, (np.nanmean(np.abs(df_ID['hand_magnet_x'][i1:i2])),
+                                  np.nanmean(np.abs(df_ID['hand_magnet_y'][i1:i2])),
+                                  np.nanmean(np.abs(df_ID['hand_magnet_z'][i1:i2])),
+                                  np.nanmean(np.abs(df_ID['chest_magnet_x'][i1:i2])),
+                                  np.nanmean(np.abs(df_ID['chest_magnet_y'][i1:i2])),
+                                  np.nanmean(np.abs(df_ID['chest_magnet_z'][i1:i2])),
+                                  np.nanmean(np.abs(df_ID['ankle_magnet_x'][i1:i2])),
+                                  np.nanmean(np.abs(df_ID['ankle_magnet_y'][i1:i2])),
+                                  np.nanmean(np.abs(df_ID['ankle_magnet_z'][i1:i2]))))
+        # heartrate difference (beginning, middle, and end of activity)
+        i1 = 33 * len(df_ID) / 100
+        i2 = 66 * len(df_ID) / 100
+        i3 = len(df_ID) - 1
+        X_obs = np.append(X_obs, (np.nanmean(df_ID['heartrate'][0:i1]) - subject_info['RestingHR'][subjectID],
+                                  np.nanmean(df_ID['heartrate'][i1:i2]) - subject_info['RestingHR'][subjectID],
+                                  np.nanmean(df_ID['heartrate'][i2:i3]) - subject_info['RestingHR'][subjectID]))
+        # subject info 
         X_obs = np.append(X_obs, (subject_info['Age'][subjectID],
                                   subject_info['Height'][subjectID],
                                   subject_info['Weight'][subjectID]))
+        # sex (one-hot-encode)
+        if subject_info['Sex'][subjectID] == 'Male':
+            X_obs = np.append(X_obs, (0, 1))
+        else:
+            X_obs = np.append(X_obs, (1, 0))
+        # dominant hand (one-hot-encode)
+        if subject_info['DominantHand'][subjectID] == 'Right':
+            X_obs = np.append(X_obs, (0, 1))
+        else:
+            X_obs = np.append(X_obs, (1, 0))
         # remove any NaN values
         X_obs = np.nan_to_num(X_obs)
 
